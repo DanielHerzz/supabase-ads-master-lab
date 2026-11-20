@@ -13,7 +13,7 @@
   "themeColor": "#3ECF8E",
   "language": "dart",
   "createdAt": 1795195000,
-  "lastOpened": 1795197847,
+  "lastOpened": 1795198755,
   "state": "normal",
   "screens": [
     {
@@ -54,7 +54,34 @@
     "branch": "main",
     "repoUrl": "https://github.com/DanielHerzz/supabase-ads-master-lab"
   },
-  "uploadHistory": [],
+  "uploadHistory": [
+    {
+      "id": "1795198755086",
+      "platform": "android",
+      "state": "preparing",
+      "startedAt": 1795198755087,
+      "commitMessage": "Release build via DartWeave",
+      "logs": [],
+      "artifacts": []
+    },
+    {
+      "id": "427281e0-ea93-49af-bd3b-fe4d08d9bf9f",
+      "platform": "push",
+      "state": "completed",
+      "startedAt": 1795198744844,
+      "finishedAt": 1795198744844,
+      "commitMessage": "Update project code",
+      "logs": [],
+      "artifacts": [
+        {
+          "name": "Repository",
+          "type": "push",
+          "sizeBytes": 0,
+          "downloadUrl": "https://github.com/DanielHerzz/supabase-ads-master-lab"
+        }
+      ]
+    }
+  ],
   "integrations": {
     "targets": {
       "android": true,
