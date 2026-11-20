@@ -1,0 +1,73 @@
+name: DartWeave Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: "Build type: apk | aab | web"
+        required: false
+        default: "apk"
+
+jobs:
+  build-android:
+    name: Build Flutter Android
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.build_type == 'apk' || github.event.inputs.build_type == 'aab' }}
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+
+      - run: flutter pub get
+
+      - name: Build APK
+        if: ${{ github.event.inputs.build_type != 'aab' }}
+        run: flutter build apk --release
+
+      - name: Build AAB
+        if: ${{ github.event.inputs.build_type == 'aab' }}
+        run: flutter build appbundle --release
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ github.event.inputs.build_type != 'aab' }}
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ github.event.inputs.build_type == 'aab' }}
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 7
+
+  build-web:
+    name: Build Flutter Web
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.build_type == 'web' }}
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+
+      - run: flutter pub get
+      - run: flutter build web --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-web
+          path: build/web/
+          retention-days: 7

@@ -1,0 +1,815 @@
+{
+  "schemaVersion": 2,
+  "id": "ads",
+  "name": "Ads",
+  "type": "appPage",
+  "inputs": [],
+  "variables": [],
+  "components": [
+    {
+      "id": "comp_admob",
+      "type": "AdMob",
+      "name": "admob",
+      "scope": "screen"
+    }
+  ],
+  "componentEvents": {
+    "comp_admob": {
+      "onInitialized": [
+        {
+          "id": "act_ads_init_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsStatus",
+            "text": "Status: AdMob SDK Initialized",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_ads_init_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsOutput",
+            "text": {
+              "id": "ep_ads_init_stat",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_admob",
+                "eventName": "onInitialized",
+                "param": "status",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onConsentUpdated": [
+        {
+          "id": "act_ads_consent_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsStatus",
+            "text": "Status: Consent status updated",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_ads_consent_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsOutput",
+            "text": {
+              "id": "ep_ads_consent_val",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_admob",
+                "eventName": "onConsentUpdated",
+                "param": "consentStatus",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onInterstitialLoaded": [
+        {
+          "id": "act_ads_int_loaded_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsStatus",
+            "text": "Status: Interstitial loaded & ready",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_ads_int_loaded_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsOutput",
+            "text": {
+              "id": "ep_ads_int_unit",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_admob",
+                "eventName": "onInterstitialLoaded",
+                "param": "adUnitId",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onInterstitialFailedToLoad": [
+        {
+          "id": "act_ads_int_fail_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsStatus",
+            "text": "Status: Interstitial failed to load",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_ads_int_fail_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsOutput",
+            "text": {
+              "id": "ep_ads_int_errmsg",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_admob",
+                "eventName": "onInterstitialFailedToLoad",
+                "param": "errorMessage",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onRewardedLoaded": [
+        {
+          "id": "act_ads_rew_loaded_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsStatus",
+            "text": "Status: Rewarded ad loaded & ready",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_ads_rew_loaded_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsOutput",
+            "text": {
+              "id": "ep_ads_rew_unit",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_admob",
+                "eventName": "onRewardedLoaded",
+                "param": "adUnitId",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onUserEarnedReward": [
+        {
+          "id": "act_ads_rew_earned_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsStatus",
+            "text": "\ud83c\udf89 Success: User earned reward!",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_ads_rew_earned_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsOutput",
+            "text": {
+              "id": "ep_ads_rew_type",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_admob",
+                "eventName": "onUserEarnedReward",
+                "param": "rewardType",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onAppOpenAdLoaded": [
+        {
+          "id": "act_ads_ao_loaded_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsStatus",
+            "text": "Status: App Open ad ready",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_ads_ao_loaded_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAdsOutput",
+            "text": {
+              "id": "ep_ads_ao_unit",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_admob",
+                "eventName": "onAppOpenAdLoaded",
+                "param": "adUnitId",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ]
+    }
+  },
+  "elements": [
+    {
+      "id": "ads_root",
+      "name": "ads_root",
+      "type": "Scaffold",
+      "properties": {
+        "backgroundColor": 4279179050,
+        "safeAreaColor": "#0F172AFF",
+        "hasToolbar": false,
+        "hasStatusBar": true,
+        "useSafeArea": true,
+        "safeAreaTop": true,
+        "safeAreaBottom": true
+      },
+      "children": [
+        {
+          "id": "scroll_ads",
+          "name": "scroll_ads",
+          "type": "SingleChildScrollView",
+          "properties": {
+            "width": "match_parent",
+            "height": "match_parent",
+            "padding": {
+              "all": 16.0
+            }
+          },
+          "children": [
+            {
+              "id": "col_ads_content",
+              "name": "col_ads_content",
+              "type": "Column",
+              "properties": {
+                "width": "match_parent",
+                "height": "wrap_content",
+                "spacing": 8.0
+              },
+              "children": [
+                {
+                  "id": "txt_title_ads",
+                  "name": "txt_title_ads",
+                  "type": "Text",
+                  "properties": {
+                    "text": "Google AdMob Ads Suite",
+                    "fontSize": 20.0,
+                    "fontWeight": "bold",
+                    "color": 4282306446,
+                    "width": "match_parent",
+                    "height": "wrap_content"
+                  },
+                  "children": [],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_nav_ads",
+                  "name": "row_nav_ads",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 6.0,
+                    "margin": {
+                      "bottom": 12.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "btn_nav_main_ads",
+                      "name": "btn_nav_main_ads",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Auth",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_ads_main",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "main",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_db_ads",
+                      "name": "btn_nav_db_ads",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Database",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_ads_db",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "db",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_storage_ads",
+                      "name": "btn_nav_storage_ads",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Storage",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_ads_storage",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "storage",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_ads_ads",
+                      "name": "btn_nav_ads_ads",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Ads",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_ads_sdk_btns",
+                  "name": "row_ads_sdk_btns",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_ads_init",
+                      "name": "btn_ads_init",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Initialize SDK",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_ads_init",
+                            "type": "admob.initialize",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_ads_consent",
+                      "name": "btn_ads_consent",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Req Consent",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_ads_consent",
+                            "type": "admob.requestConsentInfo",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_ads_form",
+                      "name": "btn_ads_form",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Show Consent",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_ads_form",
+                            "type": "admob.showConsentFormIfRequired",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_ads_int_btns",
+                  "name": "row_ads_int_btns",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_ads_load_int",
+                      "name": "btn_ads_load_int",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Load Interstitial",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 150.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_load_int",
+                            "type": "admob.loadInterstitial",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_ads_show_int",
+                      "name": "btn_ads_show_int",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Show Interstitial",
+                        "backgroundColor": 4280181165,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 150.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_show_int",
+                            "type": "admob.showInterstitial",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_ads_rew_btns",
+                  "name": "row_ads_rew_btns",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_ads_load_rew",
+                      "name": "btn_ads_load_rew",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Load Rewarded",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 150.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_load_rew",
+                            "type": "admob.loadRewarded",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_ads_show_rew",
+                      "name": "btn_ads_show_rew",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Show Rewarded",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 6.0,
+                        "width": 150.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_show_rew",
+                            "type": "admob.showRewarded",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_ads_ao_btns",
+                  "name": "row_ads_ao_btns",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_ads_load_ao",
+                      "name": "btn_ads_load_ao",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Load App Open",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 150.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_load_ao",
+                            "type": "admob.loadAppOpen",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_ads_show_ao",
+                      "name": "btn_ads_show_ao",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Show App Open",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 150.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_show_ao",
+                            "type": "admob.showAppOpen",
+                            "props": {
+                              "componentId": "comp_admob"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "card_status_ads",
+                  "name": "card_status_ads",
+                  "type": "Card",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "color": 4280166715,
+                    "borderRadius": 10.0,
+                    "elevation": 2.0,
+                    "margin": {
+                      "top": 12.0,
+                      "bottom": 8.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "col_status_ads",
+                      "name": "col_status_ads",
+                      "type": "Column",
+                      "properties": {
+                        "width": "match_parent",
+                        "height": "wrap_content",
+                        "padding": {
+                          "all": 12.0
+                        },
+                        "spacing": 6.0
+                      },
+                      "children": [
+                        {
+                          "id": "txtAdsStatus",
+                          "name": "txtAdsStatus",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Status: Ready to test Google AdMob ads",
+                            "fontSize": 14.0,
+                            "fontWeight": "bold",
+                            "color": 4282306446,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        },
+                        {
+                          "id": "txtAdsOutput",
+                          "name": "txtAdsOutput",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Waiting for action...",
+                            "fontSize": 12.0,
+                            "fontWeight": "normal",
+                            "color": 4290824906,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        }
+                      ],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                }
+              ],
+              "events": {},
+              "blocks": []
+            }
+          ],
+          "events": {},
+          "blocks": []
+        }
+      ],
+      "events": {},
+      "blocks": []
+    }
+  ]
+}

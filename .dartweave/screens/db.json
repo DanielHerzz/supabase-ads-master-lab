@@ -1,0 +1,901 @@
+{
+  "schemaVersion": 2,
+  "id": "db",
+  "name": "Database",
+  "type": "appPage",
+  "inputs": [],
+  "variables": [],
+  "components": [
+    {
+      "id": "comp_supa_db",
+      "type": "Supabase DB",
+      "name": "supaDb",
+      "scope": "screen",
+      "props": {
+        "table": "notes"
+      }
+    }
+  ],
+  "componentEvents": {
+    "comp_supa_db": {
+      "onDataLoaded": [
+        {
+          "id": "act_db_loaded_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbStatus",
+            "text": "Status: Data loaded successfully",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_db_loaded_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbOutput",
+            "text": {
+              "id": "ep_db_loaded_json",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_db",
+                "eventName": "onDataLoaded",
+                "param": "json",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onWriteCompleted": [
+        {
+          "id": "act_db_write_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbStatus",
+            "text": "Status: Write completed",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_db_write_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbOutput",
+            "text": {
+              "id": "ep_db_write_op",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_db",
+                "eventName": "onWriteCompleted",
+                "param": "operation",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onRealtimeEvent": [
+        {
+          "id": "act_db_rt_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbStatus",
+            "text": "Status: Realtime event triggered",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_db_rt_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbOutput",
+            "text": {
+              "id": "ep_db_rt_json",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_db",
+                "eventName": "onRealtimeEvent",
+                "param": "json",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onError": [
+        {
+          "id": "act_db_err_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbStatus",
+            "text": "Status: DB error",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_db_err_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtDbOutput",
+            "text": {
+              "id": "ep_db_err_msg",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_db",
+                "eventName": "onError",
+                "param": "message",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ]
+    }
+  },
+  "elements": [
+    {
+      "id": "db_root",
+      "name": "db_root",
+      "type": "Scaffold",
+      "properties": {
+        "backgroundColor": 4279179050,
+        "safeAreaColor": "#0F172AFF",
+        "hasToolbar": false,
+        "hasStatusBar": true,
+        "useSafeArea": true,
+        "safeAreaTop": true,
+        "safeAreaBottom": true
+      },
+      "children": [
+        {
+          "id": "scroll_db",
+          "name": "scroll_db",
+          "type": "SingleChildScrollView",
+          "properties": {
+            "width": "match_parent",
+            "height": "match_parent",
+            "padding": {
+              "all": 16.0
+            }
+          },
+          "children": [
+            {
+              "id": "col_db_content",
+              "name": "col_db_content",
+              "type": "Column",
+              "properties": {
+                "width": "match_parent",
+                "height": "wrap_content",
+                "spacing": 8.0
+              },
+              "children": [
+                {
+                  "id": "txt_title_db",
+                  "name": "txt_title_db",
+                  "type": "Text",
+                  "properties": {
+                    "text": "Supabase Postgres DB Suite",
+                    "fontSize": 20.0,
+                    "fontWeight": "bold",
+                    "color": 4282306446,
+                    "width": "match_parent",
+                    "height": "wrap_content"
+                  },
+                  "children": [],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_nav_db",
+                  "name": "row_nav_db",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 6.0,
+                    "margin": {
+                      "bottom": 12.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "btn_nav_main_db",
+                      "name": "btn_nav_main_db",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Auth",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_db_main",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "main",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_db_db",
+                      "name": "btn_nav_db_db",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Database",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_storage_db",
+                      "name": "btn_nav_storage_db",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Storage",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_db_storage",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "storage",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_ads_db",
+                      "name": "btn_nav_ads_db",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Ads",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_db_ads",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "ads",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtDbTable",
+                  "name": "col_input_edtDbTable",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtDbTable",
+                      "name": "lbl_edtDbTable",
+                      "type": "Text",
+                      "properties": {
+                        "text": "Table Name",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtDbTable",
+                      "name": "edtDbTable",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "notes",
+                        "hint": "Enter table name...",
+                        "obscureText": false,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtDbColumn",
+                  "name": "col_input_edtDbColumn",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtDbColumn",
+                      "name": "lbl_edtDbColumn",
+                      "type": "Text",
+                      "properties": {
+                        "text": "Column",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtDbColumn",
+                      "name": "edtDbColumn",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "title",
+                        "hint": "Enter column...",
+                        "obscureText": false,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtDbValue",
+                  "name": "col_input_edtDbValue",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtDbValue",
+                      "name": "lbl_edtDbValue",
+                      "type": "Text",
+                      "properties": {
+                        "text": "Value / Query",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtDbValue",
+                      "name": "edtDbValue",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "Hello Supabase",
+                        "hint": "Enter value / query...",
+                        "obscureText": false,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_db_btns_1",
+                  "name": "row_db_btns_1",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_db_select",
+                      "name": "btn_db_select",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Select Rows",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_select",
+                            "type": "supabaseDb.select",
+                            "props": {
+                              "componentId": "comp_supa_db",
+                              "table": {
+                                "id": "gt_table1",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbTable"
+                                }
+                              },
+                              "columns": "*",
+                              "filterColumn": "",
+                              "operator": "eq",
+                              "filterValue": "",
+                              "orderBy": "created_at",
+                              "ascending": {
+                                "id": "act_asc_true",
+                                "type": "opTrue",
+                                "props": {}
+                              },
+                              "limit": 20
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_db_insert",
+                      "name": "btn_db_insert",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Insert Row",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_insert",
+                            "type": "supabaseDb.insert",
+                            "props": {
+                              "componentId": "comp_supa_db",
+                              "table": {
+                                "id": "gt_table2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbTable"
+                                }
+                              },
+                              "data": {
+                                "title": "Hello Supabase",
+                                "content": "Sample record created from DartWeave"
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_db_update",
+                      "name": "btn_db_update",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Update Row",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_update",
+                            "type": "supabaseDb.update",
+                            "props": {
+                              "componentId": "comp_supa_db",
+                              "table": {
+                                "id": "gt_table3",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbTable"
+                                }
+                              },
+                              "matchColumn": {
+                                "id": "gt_col1",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbColumn"
+                                }
+                              },
+                              "operator": "eq",
+                              "matchValue": {
+                                "id": "gt_val1",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbValue"
+                                }
+                              },
+                              "data": {
+                                "content": "Updated content from DartWeave!"
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_db_btns_2",
+                  "name": "row_db_btns_2",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_db_upsert",
+                      "name": "btn_db_upsert",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Upsert Row",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_upsert",
+                            "type": "supabaseDb.upsert",
+                            "props": {
+                              "componentId": "comp_supa_db",
+                              "table": {
+                                "id": "gt_table4",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbTable"
+                                }
+                              },
+                              "data": {
+                                "title": "Upserted Item",
+                                "content": "Upserted content"
+                              },
+                              "onConflict": "id"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_db_delete",
+                      "name": "btn_db_delete",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Delete Row",
+                        "backgroundColor": 4292881985,
+                        "textColor": 4294967295,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_delete",
+                            "type": "supabaseDb.delete",
+                            "props": {
+                              "componentId": "comp_supa_db",
+                              "table": {
+                                "id": "gt_table5",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbTable"
+                                }
+                              },
+                              "matchColumn": {
+                                "id": "gt_col2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbColumn"
+                                }
+                              },
+                              "operator": "eq",
+                              "matchValue": {
+                                "id": "gt_val2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbValue"
+                                }
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_db_count",
+                      "name": "btn_db_count",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Count Rows",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_count",
+                            "type": "supabaseDb.count",
+                            "props": {
+                              "componentId": "comp_supa_db",
+                              "table": {
+                                "id": "gt_table6",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbTable"
+                                }
+                              },
+                              "filterColumn": "",
+                              "operator": "eq",
+                              "filterValue": ""
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_db_btns_3",
+                  "name": "row_db_btns_3",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_db_realtime",
+                      "name": "btn_db_realtime",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Listen Realtime",
+                        "backgroundColor": 4280181165,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 150.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_realtime",
+                            "type": "supabaseDb.listenRealtime",
+                            "props": {
+                              "componentId": "comp_supa_db",
+                              "table": {
+                                "id": "gt_table7",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtDbTable"
+                                }
+                              },
+                              "eventFilter": "*"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "card_status_db",
+                  "name": "card_status_db",
+                  "type": "Card",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "color": 4280166715,
+                    "borderRadius": 10.0,
+                    "elevation": 2.0,
+                    "margin": {
+                      "top": 12.0,
+                      "bottom": 8.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "col_status_db",
+                      "name": "col_status_db",
+                      "type": "Column",
+                      "properties": {
+                        "width": "match_parent",
+                        "height": "wrap_content",
+                        "padding": {
+                          "all": 12.0
+                        },
+                        "spacing": 6.0
+                      },
+                      "children": [
+                        {
+                          "id": "txtDbStatus",
+                          "name": "txtDbStatus",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Status: Ready to query database",
+                            "fontSize": 14.0,
+                            "fontWeight": "bold",
+                            "color": 4282306446,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        },
+                        {
+                          "id": "txtDbOutput",
+                          "name": "txtDbOutput",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Waiting for action...",
+                            "fontSize": 12.0,
+                            "fontWeight": "normal",
+                            "color": 4290824906,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        }
+                      ],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                }
+              ],
+              "events": {},
+              "blocks": []
+            }
+          ],
+          "events": {},
+          "blocks": []
+        }
+      ],
+      "events": {},
+      "blocks": []
+    }
+  ]
+}

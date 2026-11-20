@@ -1,0 +1,789 @@
+{
+  "schemaVersion": 2,
+  "id": "storage",
+  "name": "Storage",
+  "type": "appPage",
+  "inputs": [],
+  "variables": [],
+  "components": [
+    {
+      "id": "comp_supa_storage",
+      "type": "Supabase Storage",
+      "name": "supaStorage",
+      "scope": "screen",
+      "props": {
+        "bucket": "avatars"
+      }
+    }
+  ],
+  "componentEvents": {
+    "comp_supa_storage": {
+      "onUploadSuccess": [
+        {
+          "id": "act_st_upload_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStStatus",
+            "text": "Status: Upload completed successfully",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_st_upload_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStOutput",
+            "text": {
+              "id": "ep_st_upload_url",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_storage",
+                "eventName": "onUploadSuccess",
+                "param": "publicUrl",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onDownloadSuccess": [
+        {
+          "id": "act_st_dl_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStStatus",
+            "text": "Status: Download completed",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_st_dl_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStOutput",
+            "text": {
+              "id": "ep_st_dl_path",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_storage",
+                "eventName": "onDownloadSuccess",
+                "param": "filePath",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onPublicUrlReceived": [
+        {
+          "id": "act_st_pub_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStStatus",
+            "text": "Status: Public URL received",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_st_pub_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStOutput",
+            "text": {
+              "id": "ep_st_pub_url",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_storage",
+                "eventName": "onPublicUrlReceived",
+                "param": "url",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onDeleteSuccess": [
+        {
+          "id": "act_st_del_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStStatus",
+            "text": "Status: File deleted from bucket",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_st_del_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStOutput",
+            "text": "File removed successfully.",
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onFailure": [
+        {
+          "id": "act_st_fail_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStStatus",
+            "text": "Status: Storage error",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_st_fail_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtStOutput",
+            "text": {
+              "id": "ep_st_fail_msg",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_storage",
+                "eventName": "onFailure",
+                "param": "errorMessage",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ]
+    }
+  },
+  "elements": [
+    {
+      "id": "storage_root",
+      "name": "storage_root",
+      "type": "Scaffold",
+      "properties": {
+        "backgroundColor": 4279179050,
+        "safeAreaColor": "#0F172AFF",
+        "hasToolbar": false,
+        "hasStatusBar": true,
+        "useSafeArea": true,
+        "safeAreaTop": true,
+        "safeAreaBottom": true
+      },
+      "children": [
+        {
+          "id": "scroll_storage",
+          "name": "scroll_storage",
+          "type": "SingleChildScrollView",
+          "properties": {
+            "width": "match_parent",
+            "height": "match_parent",
+            "padding": {
+              "all": 16.0
+            }
+          },
+          "children": [
+            {
+              "id": "col_storage_content",
+              "name": "col_storage_content",
+              "type": "Column",
+              "properties": {
+                "width": "match_parent",
+                "height": "wrap_content",
+                "spacing": 8.0
+              },
+              "children": [
+                {
+                  "id": "txt_title_storage",
+                  "name": "txt_title_storage",
+                  "type": "Text",
+                  "properties": {
+                    "text": "Supabase Storage Suite (Bucket: avatars)",
+                    "fontSize": 20.0,
+                    "fontWeight": "bold",
+                    "color": 4282306446,
+                    "width": "match_parent",
+                    "height": "wrap_content"
+                  },
+                  "children": [],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_nav_storage",
+                  "name": "row_nav_storage",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 6.0,
+                    "margin": {
+                      "bottom": 12.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "btn_nav_main_storage",
+                      "name": "btn_nav_main_storage",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Auth",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_storage_main",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "main",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_db_storage",
+                      "name": "btn_nav_db_storage",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Database",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_storage_db",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "db",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_storage_storage",
+                      "name": "btn_nav_storage_storage",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Storage",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_ads_storage",
+                      "name": "btn_nav_ads_storage",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Ads",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_storage_ads",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "ads",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtStCloudPath",
+                  "name": "col_input_edtStCloudPath",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtStCloudPath",
+                      "name": "lbl_edtStCloudPath",
+                      "type": "Text",
+                      "properties": {
+                        "text": "Cloud File Path",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtStCloudPath",
+                      "name": "edtStCloudPath",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "profile_picture.png",
+                        "hint": "Enter cloud file path...",
+                        "obscureText": false,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtStLocalPath",
+                  "name": "col_input_edtStLocalPath",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtStLocalPath",
+                      "name": "lbl_edtStLocalPath",
+                      "type": "Text",
+                      "properties": {
+                        "text": "Local File Path",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtStLocalPath",
+                      "name": "edtStLocalPath",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "/data/user/0/cache/sample.png",
+                        "hint": "Enter local file path...",
+                        "obscureText": false,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_st_btns_1",
+                  "name": "row_st_btns_1",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_st_upload",
+                      "name": "btn_st_upload",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Upload File",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_upload",
+                            "type": "supabaseStorage.uploadFile",
+                            "props": {
+                              "componentId": "comp_supa_storage",
+                              "bucket": "avatars",
+                              "cloudPath": {
+                                "id": "gt_cp1",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtStCloudPath"
+                                }
+                              },
+                              "localFilePath": {
+                                "id": "gt_lp1",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtStLocalPath"
+                                }
+                              },
+                              "upsert": {
+                                "id": "act_up_true",
+                                "type": "opTrue",
+                                "props": {}
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_st_download",
+                      "name": "btn_st_download",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Download File",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_download",
+                            "type": "supabaseStorage.downloadFile",
+                            "props": {
+                              "componentId": "comp_supa_storage",
+                              "bucket": "avatars",
+                              "cloudPath": {
+                                "id": "gt_cp2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtStCloudPath"
+                                }
+                              },
+                              "localSavePath": {
+                                "id": "gt_lp2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtStLocalPath"
+                                }
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_st_public",
+                      "name": "btn_st_public",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Public URL",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_public_url",
+                            "type": "supabaseStorage.getPublicUrl",
+                            "props": {
+                              "componentId": "comp_supa_storage",
+                              "bucket": "avatars",
+                              "cloudPath": {
+                                "id": "gt_cp3",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtStCloudPath"
+                                }
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_st_btns_2",
+                  "name": "row_st_btns_2",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_st_signed",
+                      "name": "btn_st_signed",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Signed URL",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_signed_url",
+                            "type": "supabaseStorage.createSignedUrl",
+                            "props": {
+                              "componentId": "comp_supa_storage",
+                              "bucket": "avatars",
+                              "cloudPath": {
+                                "id": "gt_cp4",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtStCloudPath"
+                                }
+                              },
+                              "expiresInSeconds": 3600
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_st_list",
+                      "name": "btn_st_list",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "List Files",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_list_files",
+                            "type": "supabaseStorage.listFiles",
+                            "props": {
+                              "componentId": "comp_supa_storage",
+                              "bucket": "avatars",
+                              "prefix": ""
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_st_delete",
+                      "name": "btn_st_delete",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Delete File",
+                        "backgroundColor": 4292881985,
+                        "textColor": 4294967295,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_del_file",
+                            "type": "supabaseStorage.deleteFile",
+                            "props": {
+                              "componentId": "comp_supa_storage",
+                              "bucket": "avatars",
+                              "cloudPath": {
+                                "id": "gt_cp5",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtStCloudPath"
+                                }
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "card_status_storage",
+                  "name": "card_status_storage",
+                  "type": "Card",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "color": 4280166715,
+                    "borderRadius": 10.0,
+                    "elevation": 2.0,
+                    "margin": {
+                      "top": 12.0,
+                      "bottom": 8.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "col_status_storage",
+                      "name": "col_status_storage",
+                      "type": "Column",
+                      "properties": {
+                        "width": "match_parent",
+                        "height": "wrap_content",
+                        "padding": {
+                          "all": 12.0
+                        },
+                        "spacing": 6.0
+                      },
+                      "children": [
+                        {
+                          "id": "txtStStatus",
+                          "name": "txtStStatus",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Status: Ready to interact with avatars bucket",
+                            "fontSize": 14.0,
+                            "fontWeight": "bold",
+                            "color": 4282306446,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        },
+                        {
+                          "id": "txtStOutput",
+                          "name": "txtStOutput",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Waiting for action...",
+                            "fontSize": 12.0,
+                            "fontWeight": "normal",
+                            "color": 4290824906,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        }
+                      ],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                }
+              ],
+              "events": {},
+              "blocks": []
+            }
+          ],
+          "events": {},
+          "blocks": []
+        }
+      ],
+      "events": {},
+      "blocks": []
+    }
+  ]
+}

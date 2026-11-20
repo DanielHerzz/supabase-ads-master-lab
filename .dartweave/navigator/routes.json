@@ -1,0 +1,24 @@
+{
+  "routes": [
+    {
+      "id": "main",
+      "screen": "main",
+      "isInitial": true
+    },
+    {
+      "id": "db",
+      "screen": "db",
+      "isInitial": false
+    },
+    {
+      "id": "storage",
+      "screen": "storage",
+      "isInitial": false
+    },
+    {
+      "id": "ads",
+      "screen": "ads",
+      "isInitial": false
+    }
+  ]
+}

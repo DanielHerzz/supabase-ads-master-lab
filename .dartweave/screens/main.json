@@ -1,0 +1,783 @@
+{
+  "schemaVersion": 2,
+  "id": "main",
+  "name": "Auth",
+  "type": "appPage",
+  "inputs": [],
+  "variables": [],
+  "components": [
+    {
+      "id": "comp_supa_auth",
+      "type": "Supabase Auth",
+      "name": "supaAuth",
+      "scope": "screen"
+    }
+  ],
+  "componentEvents": {
+    "comp_supa_auth": {
+      "onSignUpCompleted": [
+        {
+          "id": "act_auth_signup_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAuthStatus",
+            "text": "Status: SignUp completed",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_auth_signup_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAuthOutput",
+            "text": {
+              "id": "ep_auth_signup_email",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_auth",
+                "eventName": "onSignUpCompleted",
+                "param": "email",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onSignInCompleted": [
+        {
+          "id": "act_auth_signin_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAuthStatus",
+            "text": "Status: SignIn completed",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_auth_signin_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAuthOutput",
+            "text": {
+              "id": "ep_auth_signin_userId",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_auth",
+                "eventName": "onSignInCompleted",
+                "param": "userId",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ],
+      "onAuthStateChanged": [
+        {
+          "id": "act_auth_state_st",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAuthStatus",
+            "text": "Status: Auth state changed",
+            "outputType": "any"
+          },
+          "children": {}
+        },
+        {
+          "id": "act_auth_state_out",
+          "type": "setText",
+          "props": {
+            "targetNodeId": "txtAuthOutput",
+            "text": {
+              "id": "ep_auth_state_email",
+              "type": "componentEventParam",
+              "props": {
+                "componentId": "comp_supa_auth",
+                "eventName": "onAuthStateChanged",
+                "param": "email",
+                "dataType": "string",
+                "outputType": "string",
+                "isEventParam": true
+              },
+              "children": {}
+            },
+            "outputType": "any"
+          },
+          "children": {}
+        }
+      ]
+    }
+  },
+  "elements": [
+    {
+      "id": "main_root",
+      "name": "main_root",
+      "type": "Scaffold",
+      "properties": {
+        "backgroundColor": 4279179050,
+        "safeAreaColor": "#0F172AFF",
+        "hasToolbar": false,
+        "hasStatusBar": true,
+        "useSafeArea": true,
+        "safeAreaTop": true,
+        "safeAreaBottom": true
+      },
+      "children": [
+        {
+          "id": "scroll_main",
+          "name": "scroll_main",
+          "type": "SingleChildScrollView",
+          "properties": {
+            "width": "match_parent",
+            "height": "match_parent",
+            "padding": {
+              "all": 16.0
+            }
+          },
+          "children": [
+            {
+              "id": "col_main_content",
+              "name": "col_main_content",
+              "type": "Column",
+              "properties": {
+                "width": "match_parent",
+                "height": "wrap_content",
+                "spacing": 8.0
+              },
+              "children": [
+                {
+                  "id": "txt_title_main",
+                  "name": "txt_title_main",
+                  "type": "Text",
+                  "properties": {
+                    "text": "Supabase Auth Suite",
+                    "fontSize": 20.0,
+                    "fontWeight": "bold",
+                    "color": 4282306446,
+                    "width": "match_parent",
+                    "height": "wrap_content"
+                  },
+                  "children": [],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_nav_main",
+                  "name": "row_nav_main",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 6.0,
+                    "margin": {
+                      "bottom": 12.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "btn_nav_main_main",
+                      "name": "btn_nav_main_main",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Auth",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_db_main",
+                      "name": "btn_nav_db_main",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Database",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_main_db",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "db",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_storage_main",
+                      "name": "btn_nav_storage_main",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Storage",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_main_storage",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "storage",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_nav_ads_main",
+                      "name": "btn_nav_ads_main",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Ads",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 8.0,
+                        "width": 78.0,
+                        "height": 36.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "nav_main_ads",
+                            "type": "navigateTo",
+                            "props": {
+                              "targetScreen": "ads",
+                              "args": {},
+                              "resultVar": "",
+                              "outputType": "any"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtAuthEmail",
+                  "name": "col_input_edtAuthEmail",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtAuthEmail",
+                      "name": "lbl_edtAuthEmail",
+                      "type": "Text",
+                      "properties": {
+                        "text": "Email / Phone",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtAuthEmail",
+                      "name": "edtAuthEmail",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "test@example.com",
+                        "hint": "Enter email / phone...",
+                        "obscureText": false,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtAuthPassword",
+                  "name": "col_input_edtAuthPassword",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtAuthPassword",
+                      "name": "lbl_edtAuthPassword",
+                      "type": "Text",
+                      "properties": {
+                        "text": "Password",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtAuthPassword",
+                      "name": "edtAuthPassword",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "SecurePass123!",
+                        "hint": "Enter password...",
+                        "obscureText": true,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "col_input_edtAuthToken",
+                  "name": "col_input_edtAuthToken",
+                  "type": "Column",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 2.0
+                  },
+                  "children": [
+                    {
+                      "id": "lbl_edtAuthToken",
+                      "name": "lbl_edtAuthToken",
+                      "type": "Text",
+                      "properties": {
+                        "text": "OTP / Token",
+                        "fontSize": 12.0,
+                        "fontWeight": "normal",
+                        "color": 4287931320,
+                        "width": "match_parent",
+                        "height": "wrap_content"
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    },
+                    {
+                      "id": "edtAuthToken",
+                      "name": "edtAuthToken",
+                      "type": "TextField",
+                      "properties": {
+                        "text": "123456",
+                        "hint": "Enter otp / token...",
+                        "obscureText": false,
+                        "width": "match_parent",
+                        "height": 42.0,
+                        "backgroundColor": 4279836717,
+                        "textColor": 4294967295,
+                        "hintColor": 4286614425,
+                        "borderRadius": 6.0
+                      },
+                      "children": [],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_auth_btns_1",
+                  "name": "row_auth_btns_1",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_auth_signup",
+                      "name": "btn_auth_signup",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Sign Up",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_signup",
+                            "type": "supabaseAuth.signUp",
+                            "props": {
+                              "componentId": "comp_supa_auth",
+                              "email": {
+                                "id": "gt_email",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthEmail"
+                                }
+                              },
+                              "password": {
+                                "id": "gt_pass",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthPassword"
+                                }
+                              },
+                              "data": {}
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_auth_signin",
+                      "name": "btn_auth_signin",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Sign In",
+                        "backgroundColor": 4282306446,
+                        "textColor": 4279179050,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_signin",
+                            "type": "supabaseAuth.signInWithPassword",
+                            "props": {
+                              "componentId": "comp_supa_auth",
+                              "emailOrPhone": {
+                                "id": "gt_email2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthEmail"
+                                }
+                              },
+                              "password": {
+                                "id": "gt_pass2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthPassword"
+                                }
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_auth_signout",
+                      "name": "btn_auth_signout",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Sign Out",
+                        "backgroundColor": 4292881985,
+                        "textColor": 4294967295,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_signout",
+                            "type": "supabaseAuth.signOut",
+                            "props": {
+                              "componentId": "comp_supa_auth"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "row_auth_btns_2",
+                  "name": "row_auth_btns_2",
+                  "type": "Row",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "spacing": 8.0
+                  },
+                  "children": [
+                    {
+                      "id": "btn_auth_otp",
+                      "name": "btn_auth_otp",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Verify OTP",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_verify_otp",
+                            "type": "supabaseAuth.verifyOtp",
+                            "props": {
+                              "componentId": "comp_supa_auth",
+                              "emailOrPhone": {
+                                "id": "gt_email3",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthEmail"
+                                }
+                              },
+                              "token": {
+                                "id": "gt_token",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthToken"
+                                }
+                              },
+                              "otpType": "email"
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_auth_reset",
+                      "name": "btn_auth_reset",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Reset Pass",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_reset_pass",
+                            "type": "supabaseAuth.resetPasswordForEmail",
+                            "props": {
+                              "componentId": "comp_supa_auth",
+                              "email": {
+                                "id": "gt_email4",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthEmail"
+                                }
+                              }
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    },
+                    {
+                      "id": "btn_auth_update",
+                      "name": "btn_auth_update",
+                      "type": "ElevatedButton",
+                      "properties": {
+                        "text": "Update User",
+                        "backgroundColor": 4280166715,
+                        "textColor": 4293060848,
+                        "borderRadius": 6.0,
+                        "width": 100.0,
+                        "height": 38.0
+                      },
+                      "children": [],
+                      "events": {
+                        "onPressed": [
+                          {
+                            "id": "act_update_user",
+                            "type": "supabaseAuth.updateUser",
+                            "props": {
+                              "componentId": "comp_supa_auth",
+                              "email": {
+                                "id": "gt_email5",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthEmail"
+                                }
+                              },
+                              "password": {
+                                "id": "gt_pass5",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthPassword"
+                                }
+                              },
+                              "data": {}
+                            },
+                            "children": {}
+                          }
+                        ]
+                      },
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                },
+                {
+                  "id": "card_status_main",
+                  "name": "card_status_main",
+                  "type": "Card",
+                  "properties": {
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    "color": 4280166715,
+                    "borderRadius": 10.0,
+                    "elevation": 2.0,
+                    "margin": {
+                      "top": 12.0,
+                      "bottom": 8.0
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "col_status_main",
+                      "name": "col_status_main",
+                      "type": "Column",
+                      "properties": {
+                        "width": "match_parent",
+                        "height": "wrap_content",
+                        "padding": {
+                          "all": 12.0
+                        },
+                        "spacing": 6.0
+                      },
+                      "children": [
+                        {
+                          "id": "txtAuthStatus",
+                          "name": "txtAuthStatus",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Status: Ready to test Auth",
+                            "fontSize": 14.0,
+                            "fontWeight": "bold",
+                            "color": 4282306446,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        },
+                        {
+                          "id": "txtAuthOutput",
+                          "name": "txtAuthOutput",
+                          "type": "Text",
+                          "properties": {
+                            "text": "Waiting for action...",
+                            "fontSize": 12.0,
+                            "fontWeight": "normal",
+                            "color": 4290824906,
+                            "width": "match_parent",
+                            "height": "wrap_content"
+                          },
+                          "children": [],
+                          "events": {},
+                          "blocks": []
+                        }
+                      ],
+                      "events": {},
+                      "blocks": []
+                    }
+                  ],
+                  "events": {},
+                  "blocks": []
+                }
+              ],
+              "events": {},
+              "blocks": []
+            }
+          ],
+          "events": {},
+          "blocks": []
+        }
+      ],
+      "events": {},
+      "blocks": []
+    }
+  ]
+}

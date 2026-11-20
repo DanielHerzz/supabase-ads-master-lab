@@ -1,0 +1,315 @@
+name: DartWeave Android Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type (apk or aab)'
+        required: false
+        default: 'apk'
+      platforms:
+        description: 'Target platforms (android, ios, or both)'
+        required: false
+        default: 'android'
+      ios_signing:
+        description: 'iOS signing mode (unsigned or signed)'
+        required: false
+        default: 'unsigned'
+      upload_testflight:
+        description: 'Upload signed IPA to TestFlight (true or false)'
+        required: false
+        default: 'true'
+      build_number_offset:
+        description: 'Build number offset added to github.run_number'
+        required: false
+        default: '0'
+
+jobs:
+  build:
+    name: Build Flutter Android
+    if: ${{ inputs.platforms == 'android' || inputs.platforms == 'both' || inputs.platforms == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: 'stable'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Decode Keystore & Generate key.properties
+        env:
+          DW_KEYSTORE_BASE64: ${{ secrets.DW_KEYSTORE_BASE64 }}
+          DW_KEYSTORE_PASSWORD: ${{ secrets.DW_KEYSTORE_PASSWORD }}
+          DW_KEY_ALIAS: ${{ secrets.DW_KEY_ALIAS }}
+          DW_KEY_PASSWORD: ${{ secrets.DW_KEY_PASSWORD }}
+        run: |
+          set +x
+          if [ -n "$DW_KEYSTORE_BASE64" ]; then
+            printf "%s" "$DW_KEYSTORE_BASE64" | tr -d "\r\n " | base64 --decode > android/app/upload-keystore.jks
+            {
+              printf "storePassword=%s\n" "$DW_KEYSTORE_PASSWORD"
+              printf "keyPassword=%s\n" "${DW_KEY_PASSWORD:-$DW_KEYSTORE_PASSWORD}"
+              printf "keyAlias=%s\n" "$DW_KEY_ALIAS"
+              printf "storeFile=upload-keystore.jks\n"
+            } > android/key.properties
+            KEYTOOL_OUT=$(keytool -list -v -keystore android/app/upload-keystore.jks -storepass "$DW_KEYSTORE_PASSWORD" -alias "$DW_KEY_ALIAS" 2>/dev/null || true)
+            SHA1=$(printf "%s\n" "$KEYTOOL_OUT" | grep -m1 -E "SHA1:" | sed -E "s/.*SHA1:[[:space:]]*([0-9A-Fa-f:]+).*/\1/")
+            SHA256=$(printf "%s\n" "$KEYTOOL_OUT" | grep -m1 -E "SHA256:" | sed -E "s/.*SHA256:[[:space:]]*([0-9A-Fa-f:]+).*/\1/")
+            printf '{"configured":true,"keyAlias":"%s","sha1":"%s","sha256":"%s"}\n' "$DW_KEY_ALIAS" "$SHA1" "$SHA256" > signing-info.json
+          else
+            echo "WARNING: DW_KEYSTORE_BASE64 secret is not set; falling back to debug signing."
+            printf '{"configured":false,"sha1":"","sha256":""}\n' > signing-info.json
+          fi
+
+      - name: Build APK
+        if: ${{ github.event.inputs.build_type != 'aab' }}
+        run: flutter build apk --release
+
+      - name: Build AAB
+        if: ${{ github.event.inputs.build_type == 'aab' }}
+        run: flutter build appbundle --release
+
+      - name: Cleanup Signing Files
+        if: always()
+        run: rm -f android/key.properties android/app/upload-keystore.jks
+
+      - name: Upload Signing Info Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: signing-info
+          path: signing-info.json
+          retention-days: 7
+
+      - name: Upload APK Artifact
+        if: ${{ github.event.inputs.build_type != 'aab' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7
+
+      - name: Upload AAB Artifact
+        if: ${{ github.event.inputs.build_type == 'aab' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 7
+
+  build-ios:
+    name: Build Flutter iOS (No Codesign)
+    if: ${{ inputs.platforms == 'ios' || inputs.platforms == 'both' }}
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: 'stable'
+          cache: true
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock', '**/Podfile') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Ensure iOS Runner scaffold
+        run: |
+          if [ ! -d "ios/Runner.xcodeproj" ]; then
+            rm -rf /tmp/dw_ios_scaffold
+            flutter create --no-pub --platforms=ios --project-name dw_runner /tmp/dw_ios_scaffold
+            mkdir -p ios
+            rsync -a --ignore-existing /tmp/dw_ios_scaffold/ios/ ios/
+          fi
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Configure iOS Xcode project (xcodeproj)
+        run: |
+          ruby -r xcodeproj -e '
+            proj_path = "ios/Runner.xcodeproj"
+            exit 0 unless File.exist?(proj_path)
+            proj = Xcodeproj::Project.open(proj_path)
+            group = proj.main_group["Runner"] || proj.main_group
+            target = proj.targets.find { |t| t.name == "Runner" } || proj.targets.first
+            pod_ios_ver = nil
+            if File.exist?("ios/Podfile")
+              m = File.read("ios/Podfile").match(/platform\s+:ios,\s*[\x27"]([0-9.]+)[\x27"]/)
+              pod_ios_ver = m[1] if m
+            end
+            bundle_id = "com.example.supabaseadslab"
+            if File.exist?("ios/Runner/GoogleService-Info.plist")
+              gs_ref = group.files.find { |f| f.path == "GoogleService-Info.plist" || f.path == "Runner/GoogleService-Info.plist" } || group.new_file("GoogleService-Info.plist")
+              if target && !target.resources_build_phase.files_references.include?(gs_ref)
+                target.resources_build_phase.add_file_reference(gs_ref, true)
+              end
+            end
+            ent_rel = "Runner/Runner.entitlements"
+            has_ent = File.exist?("ios/#{ent_rel}")
+            if has_ent
+              unless group.files.any? { |f| f.path == "Runner.entitlements" || f.path == ent_rel }
+                group.new_file("Runner.entitlements")
+              end
+            end
+            if target
+              target.build_configurations.each do |cfg|
+                cfg.build_settings["CODE_SIGN_ENTITLEMENTS"] = ent_rel if has_ent
+                cfg.build_settings["PRODUCT_BUNDLE_IDENTIFIER"] = bundle_id unless bundle_id.empty?
+                if pod_ios_ver
+                  cur = cfg.build_settings["IPHONEOS_DEPLOYMENT_TARGET"].to_s
+                  if cur.empty? || Gem::Version.new(cur) < Gem::Version.new(pod_ios_ver)
+                    cfg.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = pod_ios_ver
+                  end
+                end
+              end
+            end
+            proj.save
+          '
+
+      - name: Build iOS (No Codesign)
+        if: ${{ inputs.ios_signing != 'signed' }}
+        run: flutter build ios --release --no-codesign
+
+      - name: Package Unsigned IPA
+        if: ${{ inputs.ios_signing != 'signed' }}
+        run: |
+          mkdir -p build/ios/ipa/Payload
+          cp -r build/ios/iphoneos/Runner.app build/ios/ipa/Payload/
+          cd build/ios/ipa && zip -r Runner-unsigned.ipa Payload
+
+      - name: Upload IPA Artifact
+        if: ${{ inputs.ios_signing != 'signed' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-ipa
+          path: build/ios/ipa/Runner-unsigned.ipa
+          retention-days: 7
+
+      - name: Prepare key
+        if: ${{ inputs.ios_signing == 'signed' }}
+        env:
+          ASC_KEY_BASE64: ${{ secrets.ASC_KEY_BASE64 }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        run: |
+          set +x
+          if [ -z "$ASC_KEY_BASE64" ] || [ -z "$ASC_KEY_ID" ]; then
+            echo "ERROR: Missing ASC_KEY_BASE64 or ASC_KEY_ID secret."
+            exit 1
+          fi
+          mkdir -p "$HOME/.appstoreconnect/private_keys"
+          printf "%s" "$ASC_KEY_BASE64" | tr -d "\r\n " | base64 --decode > "$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          chmod 600 "$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+
+      - name: Configure Info.plist
+        if: ${{ inputs.ios_signing == 'signed' }}
+        run: |
+          if [ -f "ios/Runner/Info.plist" ]; then
+            /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" ios/Runner/Info.plist 2>/dev/null || /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" ios/Runner/Info.plist
+          fi
+
+      - name: Build iOS (Signed)
+        if: ${{ inputs.ios_signing == 'signed' }}
+        env:
+          INPUT_OFFSET: ${{ inputs.build_number_offset }}
+        run: |
+          OFFSET="${INPUT_OFFSET:-0}"
+          BUILD_NUM=$((GITHUB_RUN_NUMBER + OFFSET))
+          echo "BUILD_NUM=$BUILD_NUM" >> "$GITHUB_ENV"
+          flutter build ios --release --no-codesign --build-number="$BUILD_NUM"
+
+      - name: Sign IPA
+        if: ${{ inputs.ios_signing == 'signed' }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+        run: |
+          set +x
+          KEY_PATH="$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          mkdir -p build/ios/archive build/ios/ipa
+          xcodebuild -workspace ios/Runner.xcworkspace \\
+            -scheme Runner \\
+            -configuration Release \\
+            -archivePath build/ios/archive/Runner.xcarchive \\
+            archive \\
+            -allowProvisioningUpdates \\
+            -authenticationKeyPath "$KEY_PATH" \\
+            -authenticationKeyID "$ASC_KEY_ID" \\
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \\
+            DEVELOPMENT_TEAM="$IOS_TEAM_ID" \\
+            CODE_SIGN_STYLE=Automatic \\
+            PRODUCT_BUNDLE_IDENTIFIER="com.example.supabaseadslab" \\
+            CURRENT_PROJECT_VERSION="${BUILD_NUM:-$GITHUB_RUN_NUMBER}"
+          cat > build/ios/ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>teamID</key>
+            <string>$IOS_TEAM_ID</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \\
+            -archivePath build/ios/archive/Runner.xcarchive \\
+            -exportOptionsPlist build/ios/ExportOptions.plist \\
+            -exportPath build/ios/ipa \\
+            -allowProvisioningUpdates \\
+            -authenticationKeyPath "$KEY_PATH" \\
+            -authenticationKeyID "$ASC_KEY_ID" \\
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+
+      - name: Upload Signed IPA Artifact
+        if: ${{ inputs.ios_signing == 'signed' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-signed-ipa
+          path: build/ios/ipa/*.ipa
+          retention-days: 7
+
+      - name: Upload to TestFlight
+        if: ${{ inputs.ios_signing == 'signed' && inputs.upload_testflight != 'false' }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set +x
+          IPA_PATH=$(find build/ios/ipa -maxdepth 1 -name "*.ipa" | head -n 1)
+          if [ -z "$IPA_PATH" ]; then
+            echo "ERROR: Signed IPA file not found in build/ios/ipa"
+            exit 1
+          fi
+          xcrun altool --upload-app --type ios --file "$IPA_PATH" --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+
+      - name: Cleanup Apple Key
+        if: always()
+        run: rm -rf "$HOME/.appstoreconnect/private_keys"

@@ -1,0 +1,129 @@
+{
+  "projectId": 758,
+  "uuid": "e8a931c4-7b24-4f0e-b816-6c7b91d20758",
+  "projectName": "Supabase & Ads Master Lab",
+  "dartProjectName": "supabase_ads_master_lab",
+  "packageName": "com.example.supabaseadslab",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "minSdk": 21,
+  "targetSdk": 36,
+  "compileSdk": 36,
+  "theme": "Material3",
+  "themeColor": "#3ECF8E",
+  "language": "dart",
+  "createdAt": 1795195000,
+  "lastOpened": 1795197847,
+  "state": "normal",
+  "screens": [
+    {
+      "id": "main",
+      "title": "Auth",
+      "type": "appPage"
+    },
+    {
+      "id": "db",
+      "title": "Database",
+      "type": "appPage"
+    },
+    {
+      "id": "storage",
+      "title": "Storage",
+      "type": "appPage"
+    },
+    {
+      "id": "ads",
+      "title": "Ads",
+      "type": "appPage"
+    }
+  ],
+  "icon": {
+    "path": "assets/icon.png"
+  },
+  "targetPlatforms": [
+    "android",
+    "ios"
+  ],
+  "schemaVersion": 3,
+  "startPageId": "main",
+  "templates": {},
+  "variables": [],
+  "gitLink": {
+    "owner": "DanielHerzz",
+    "repoName": "supabase-ads-master-lab",
+    "branch": "main",
+    "repoUrl": "https://github.com/DanielHerzz/supabase-ads-master-lab"
+  },
+  "uploadHistory": [],
+  "integrations": {
+    "targets": {
+      "android": true,
+      "ios": false
+    },
+    "firebase": {
+      "enabled": false,
+      "shared": {
+        "projectId": "",
+        "messagingSenderId": "",
+        "databaseURL": "",
+        "storageBucket": "",
+        "webClientId": ""
+      },
+      "android": {
+        "appId": "",
+        "apiKey": ""
+      },
+      "ios": {
+        "appId": "",
+        "apiKey": "",
+        "bundleId": "",
+        "iosClientId": ""
+      }
+    },
+    "oneSignal": {
+      "enabled": false,
+      "appId": ""
+    },
+    "admob": {
+      "enabled": true,
+      "testMode": true,
+      "androidAppId": "ca-app-pub-3940256099942544~3347511713",
+      "iosAppId": "ca-app-pub-3940256099942544~1458002511",
+      "androidBannerUnitId": "ca-app-pub-3940256099942544/6300978111",
+      "iosBannerUnitId": "ca-app-pub-3940256099942544/2934735716",
+      "androidNativeUnitId": "ca-app-pub-3940256099942544/2247696110",
+      "iosNativeUnitId": "ca-app-pub-3940256099942544/3986624511",
+      "androidInterstitialUnitId": "ca-app-pub-3940256099942544/1033173712",
+      "iosInterstitialUnitId": "ca-app-pub-3940256099942544/4411468910",
+      "androidRewardedUnitId": "ca-app-pub-3940256099942544/5224354917",
+      "iosRewardedUnitId": "ca-app-pub-3940256099942544/1712485313",
+      "androidAppOpenUnitId": "ca-app-pub-3940256099942544/9257395921",
+      "iosAppOpenUnitId": "ca-app-pub-3940256099942544/5575463023",
+      "androidRewardedInterstitialUnitId": "ca-app-pub-3940256099942544/5354046379",
+      "iosRewardedInterstitialUnitId": "ca-app-pub-3940256099942544/6978759866",
+      "autoShowAppOpenOnLaunch": false,
+      "enableIosAttPrompt": true
+    },
+    "googleMaps": {
+      "enabled": false,
+      "androidApiKey": "",
+      "iosApiKey": ""
+    },
+    "supabase": {
+      "enabled": true,
+      "projectUrl": "https://pvyblfezvganlttlybky.supabase.co",
+      "anonKey": "sb_publishable_Th-TPbQZmeZ_-hXDCpvNng_SLsjF-di",
+      "storageBucket": "avatars"
+    },
+    "cloudflare": {
+      "enabled": false,
+      "accountId": "",
+      "apiToken": "",
+      "r2BucketName": "",
+      "r2PublicBaseUrl": "",
+      "d1DatabaseId": "",
+      "kvNamespaceId": "",
+      "workerBaseUrl": ""
+    }
+  }
+}
