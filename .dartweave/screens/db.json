@@ -163,7 +163,7 @@
       "type": "Scaffold",
       "properties": {
         "backgroundColor": 4279179050,
-        "safeAreaColor": "#0F172AFF",
+        "safeAreaColor": 4279244586,
         "hasToolbar": false,
         "hasStatusBar": true,
         "useSafeArea": true,
@@ -174,7 +174,7 @@
         {
           "id": "scroll_db",
           "name": "scroll_db",
-          "type": "SingleChildScrollView",
+          "type": "scrollV",
           "properties": {
             "width": "match_parent",
             "height": "match_parent",
@@ -216,7 +216,7 @@
                   "properties": {
                     "width": "match_parent",
                     "height": "wrap_content",
-                    "spacing": 6.0,
+                    "spacing": 4.0,
                     "margin": {
                       "bottom": 12.0
                     }
@@ -231,7 +231,7 @@
                         "backgroundColor": 4280166715,
                         "textColor": 4293060848,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -261,7 +261,7 @@
                         "backgroundColor": 4282306446,
                         "textColor": 4279179050,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -277,7 +277,7 @@
                         "backgroundColor": 4280166715,
                         "textColor": 4293060848,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -307,7 +307,7 @@
                         "backgroundColor": 4280166715,
                         "textColor": 4293060848,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -842,7 +842,7 @@
                         "padding": {
                           "all": 12.0
                         },
-                        "spacing": 6.0
+                        "spacing": 4.0
                       },
                       "children": [
                         {

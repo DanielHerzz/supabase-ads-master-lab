@@ -126,7 +126,7 @@
       "type": "Scaffold",
       "properties": {
         "backgroundColor": 4279179050,
-        "safeAreaColor": "#0F172AFF",
+        "safeAreaColor": 4279244586,
         "hasToolbar": false,
         "hasStatusBar": true,
         "useSafeArea": true,
@@ -137,7 +137,7 @@
         {
           "id": "scroll_main",
           "name": "scroll_main",
-          "type": "SingleChildScrollView",
+          "type": "scrollV",
           "properties": {
             "width": "match_parent",
             "height": "match_parent",
@@ -179,7 +179,7 @@
                   "properties": {
                     "width": "match_parent",
                     "height": "wrap_content",
-                    "spacing": 6.0,
+                    "spacing": 4.0,
                     "margin": {
                       "bottom": 12.0
                     }
@@ -194,7 +194,7 @@
                         "backgroundColor": 4282306446,
                         "textColor": 4279179050,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -210,7 +210,7 @@
                         "backgroundColor": 4280166715,
                         "textColor": 4293060848,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -240,7 +240,7 @@
                         "backgroundColor": 4280166715,
                         "textColor": 4293060848,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -270,7 +270,7 @@
                         "backgroundColor": 4280166715,
                         "textColor": 4293060848,
                         "borderRadius": 8.0,
-                        "width": 78.0,
+                        "width": 70.0,
                         "height": 36.0
                       },
                       "children": [],
@@ -514,18 +514,18 @@
                             "type": "supabaseAuth.signInWithPassword",
                             "props": {
                               "componentId": "comp_supa_auth",
-                              "emailOrPhone": {
-                                "id": "gt_email2",
-                                "type": "getText",
-                                "props": {
-                                  "targetNodeId": "edtAuthEmail"
-                                }
-                              },
                               "password": {
                                 "id": "gt_pass2",
                                 "type": "getText",
                                 "props": {
                                   "targetNodeId": "edtAuthPassword"
+                                }
+                              },
+                              "email": {
+                                "id": "gt_email2",
+                                "type": "getText",
+                                "props": {
+                                  "targetNodeId": "edtAuthEmail"
                                 }
                               }
                             },
@@ -635,7 +635,7 @@
                         "onPressed": [
                           {
                             "id": "act_reset_pass",
-                            "type": "supabaseAuth.resetPasswordForEmail",
+                            "type": "supabaseAuth.sendPasswordReset",
                             "props": {
                               "componentId": "comp_supa_auth",
                               "email": {
@@ -724,7 +724,7 @@
                         "padding": {
                           "all": 12.0
                         },
-                        "spacing": 6.0
+                        "spacing": 4.0
                       },
                       "children": [
                         {

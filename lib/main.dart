@@ -61,7 +61,7 @@ class _DartWeaveStartPageState extends State<_DartWeaveStartPage> {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: const Color(0x0F172AFF),
+      statusBarColor: const Color(0xFF10172A),
       statusBarIconBrightness: Brightness.light,
       statusBarBrightness: Brightness.dark,
     ));
